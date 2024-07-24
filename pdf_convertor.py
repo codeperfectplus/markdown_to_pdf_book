@@ -5,6 +5,7 @@ class MarkdownToPDFConverter:
     def __init__(self, input_dir, output_dir='output', template_file='template.tex'):
         self.input_dir = input_dir
         self.output_dir = output_dir
+        os.makedirs(self.output_dir, exist_ok=True)
         self.template_file = template_file
 
     def convert_markdown_to_pdf(self, input_md_file, output_pdf_file):

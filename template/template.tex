@@ -1,0 +1,115 @@
+\documentclass[12pt, a4paper, oneside]{book}
+
+% Packages for additional functionality
+\usepackage{fontspec}        % For font customization
+\usepackage{geometry}        % For setting page margins
+\usepackage{fancyhdr}        % For custom headers and footers
+\usepackage{hyperref}        % For hyperlinks
+\usepackage{titlesec}        % For customizing section titles
+\usepackage{amsmath}         % For mathematical expressions
+\usepackage{enumitem}        % For list customization
+\usepackage{graphicx}        % For including graphics
+\usepackage{tocbibind}       % For binding the TOC, LOF, LOT into the TOC
+\usepackage{emptypage}       % No headers or footers on empty pages
+\usepackage{ifthen}          % For conditional statements
+
+% Define \tightlist if not already defined
+\newcommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}%
+  \setlength{\parskip}{0pt}%
+  \setlength{\parsep}{0pt}%
+}
+
+% Initialize counters for figures and tables
+\newcounter{totalfigures}
+\setcounter{totalfigures}{0}
+
+\newcounter{totaltables}
+\setcounter{totaltables}{0}
+
+% Page layout settings
+\geometry{
+    top=1.0in,
+    bottom=1.0in,
+    left=1.25in,
+    right=1.25in
+}
+
+% Font settings
+\setmainfont{Times New Roman}
+
+% Title page setup
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+% Custom section and subsection numbering
+\renewcommand{\thesection}{\thechapter.\arabic{section}}
+\renewcommand{\thesubsection}{\thechapter.\arabic{section}.\arabic{subsection}}
+
+% Include configuration file
+\input{template/config.tex}
+
+
+% Document title and author
+\title{\href{\titlehref}{\titletext}}
+\author{\authorname}
+\date{\today}
+
+% Custom header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\rightmark}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \centering
+    \vspace*{1.5in}
+    \Huge
+    \textbf{\href{\titlehref}{\titletext}}
+    \vspace{0.5in}
+    \LARGE
+    by
+    \vspace{0.5in}
+    \textbf{\authorname}
+    \vspace{1in}
+    \Large
+    \today
+    \vfill
+    \includegraphics[width=0.5\textwidth]{\logofile}
+    \vfill
+\end{titlepage}
+
+% Preface
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+\prefaceremark
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% Conditional List of Figures
+\ifthenelse{\value{totalfigures} > 0}{
+    \listoffigures
+    \newpage
+}
+
+% Conditional List of Tables
+\ifthenelse{\value{totaltables} > 0}{
+    \listoftables
+    \newpage
+}
+
+% Ensure the first chapter starts at 1
+\setcounter{chapter}{0}
+\chapter{\titletext}
+% The introduction chapter will be numbered 1
+
+% Placeholder for body content
+$body$
+
+\end{document}

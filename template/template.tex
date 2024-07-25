@@ -68,7 +68,12 @@
 \frontmatter
 
 % Full-page background image
-\includepdf{\backgroundimage}
+% Use `\includepdf` to include the background image if it's a PDF; otherwise, use `\includegraphics`
+\begin{titlepage}
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{\backgroundimage}
+    \newpage % Force a new page to ensure the background image is applied
+\end{titlepage}
 
 % Cover Page
 \begin{titlepage}
@@ -79,7 +84,7 @@
     \vspace{1.5in}
     \vfill
     \vspace{0.3in}
-    \textbf {\authorname}
+    \textbf{\authorname}
     \vfill
     \includegraphics[width=0.5\textwidth]{\logofile}
     \vfill
@@ -102,7 +107,6 @@
 \addcontentsline{toc}{chapter}{Introduction}
 \inntroductionmark
 
-
 % Table of Contents
 \tableofcontents
 \newpage
@@ -119,8 +123,11 @@
     \newpage
 }
 
+% Main matter starts here
 \mainmatter
 \setcounter{chapter}{1}
 
+% Body content
 $body$
+
 \end{document}

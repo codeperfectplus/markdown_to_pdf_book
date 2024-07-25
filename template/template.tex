@@ -12,6 +12,7 @@
 \usepackage{tocbibind}       % For binding the TOC, LOF, LOT into the TOC
 \usepackage{emptypage}       % No headers or footers on empty pages
 \usepackage{ifthen}          % For conditional statements
+\usepackage{pdfpages}        % For including PDF pages
 
 % Define \tightlist if not already defined
 \newcommand{\tightlist}{%
@@ -49,7 +50,6 @@
 % Include configuration file
 \input{template/config.tex}
 
-
 % Document title and author
 \title{\href{\titlehref}{\titletext}}
 \author{\authorname}
@@ -64,29 +64,44 @@
 
 \begin{document}
 
-% Title Page
+% i, ii, iii, iv, etc.
+\frontmatter
+
+% Full-page background image
+\includepdf{\backgroundimage}
+
+% Cover Page
 \begin{titlepage}
     \centering
-    \vspace*{1.5in}
+    \vspace*{2in}
     \Huge
     \textbf{\href{\titlehref}{\titletext}}
-    \vspace{0.5in}
-    \LARGE
-    by
-    \vspace{0.5in}
-    \textbf{\authorname}
-    \vspace{1in}
-    \Large
-    \today
+    \vspace{1.5in}
+    \vfill
+    \vspace{0.3in}
+    \textbf {\authorname}
     \vfill
     \includegraphics[width=0.5\textwidth]{\logofile}
     \vfill
+    \Large
+    \today
 \end{titlepage}
 
 % Preface
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
 \prefaceremark
+
+% Acknowledgements
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+\accknoldgementmark
+
+% Introduction
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+\inntroductionmark
+
 
 % Table of Contents
 \tableofcontents
@@ -104,12 +119,8 @@
     \newpage
 }
 
-% Ensure the first chapter starts at 1
-\setcounter{chapter}{0}
-\chapter{\titletext}
-% The introduction chapter will be numbered 1
+\mainmatter
+\setcounter{chapter}{1}
 
-% Placeholder for body content
 $body$
-
 \end{document}

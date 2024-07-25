@@ -15,8 +15,9 @@ class MarkdownToPDFConverter:
             '--pdf-engine=xelatex',
             '--template=' + self.template_file,
             input_md_file,
-            '-o', 
-            output_pdf_file
+            '-o',
+            output_pdf_file,
+            '--verbose'
         ]
         try:
             result = subprocess.run(cmd, check=True, stderr=subprocess.PIPE, text=True)
@@ -57,7 +58,7 @@ class MarkdownToPDFConverter:
                     self.convert_markdown_to_pdf(input_md_file, output_pdf_file)
 
 if __name__ == "__main__":
-    input_dir = '/home/deepak/Documents/interview-prep'  
+    input_dir = '/home/deepak/Documents/interview-prep/'
     output_dir = 'Pdfs'
     template_file = 'template/template.tex'
     single_book = True  # Set to True to combine all Markdown files into one PDF

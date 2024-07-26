@@ -1,5 +1,7 @@
 import os
 import subprocess
+import argparse
+
 
 class MarkdownToPDFConverter:
     def __init__(self, input_dir, output_dir='output', template_file='template.tex'):
@@ -57,14 +59,21 @@ class MarkdownToPDFConverter:
 
                     self.convert_markdown_to_pdf(input_md_file, output_pdf_file)
 
-if __name__ == "__main__":
-    input_dir = '/home/deepak/Documents/interview-prep/'
-    output_dir = 'Pdfs'
-    template_file = 'template/template.tex'
-    single_book = True  # Set to True to combine all Markdown files into one PDF
 
-    converter = MarkdownToPDFConverter(input_dir, output_dir, template_file)
-    if single_book:
+def main():
+    parser = argparse.ArgumentParser(description='Convert Markdown files to PDF.')
+    parser.add_argument('-i', '--input_dir', type=str, help='Directory containing Markdown files.', required=True)
+    parser.add_argument('-o', '--output_dir', type=str, help='Directory to save PDF files.', default='PDFs')
+    parser.add_argument('-t', '--template_file', type=str, help='Path to LaTeX template file.', default='template/template.tex')
+    parser.add_argument('--single', action='store_true', help='Combine all Markdown files into one PDF.')
+
+    args = parser.parse_args()
+
+    converter = MarkdownToPDFConverter(args.input_dir, args.output_dir, args.template_file)
+    if args.single:
         converter.combine_markdown_files()
     else:
         converter.batch_convert_markdown_to_pdf()
+
+if __name__ == "__main__":
+    main()

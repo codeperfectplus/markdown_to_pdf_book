@@ -64,7 +64,7 @@ def main():
     parser = argparse.ArgumentParser(description='Convert Markdown files to PDF.')
     parser.add_argument('-i', '--input_dir', type=str, help='Directory containing Markdown files.', required=True)
     parser.add_argument('-o', '--output_dir', type=str, help='Directory to save PDF files.', default='PDFs')
-    parser.add_argument('-t', '--template_file', type=str, help='Path to LaTeX template file.', default='template/template.tex')
+    parser.add_argument('-t', '--template_file', type=str, help='Path to LaTeX template file.', default='md2book/template/template.tex')
     parser.add_argument('--single', action='store_true', help='Combine all Markdown files into one PDF.')
 
     args = parser.parse_args()

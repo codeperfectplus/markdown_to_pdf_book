@@ -1,7 +1,12 @@
 import os
 import subprocess
 import argparse
+import logging
+from tqdm import tqdm  # Import tqdm for progress bar
 
+# Set up logging
+logging.basicConfig(filename='debug.log', level=logging.DEBUG,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 class MarkdownToPDFConverter:
     def __init__(self, input_dir, output_dir='output', template_file='template.tex'):
@@ -23,11 +28,9 @@ class MarkdownToPDFConverter:
         ]
         try:
             result = subprocess.run(cmd, check=True, stderr=subprocess.PIPE, text=True)
-            print(f'Converted {input_md_file} to {output_pdf_file}')
+            logging.info(f'Successfully converted {input_md_file} to {output_pdf_file}')
         except subprocess.CalledProcessError as e:
-            print(f'Error converting {input_md_file} to PDF:')
-            print(f'Error message: {e.stderr}')
-            print(f'Command: {" ".join(cmd)}')
+            logging.error(f'Error converting {input_md_file} to PDF:\nError message: {e.stderr}\nCommand: {" ".join(cmd)}')
 
     def combine_markdown_files(self):
         combined_md_file_path = os.path.join(self.output_dir, 'combined.md')
@@ -38,7 +41,7 @@ class MarkdownToPDFConverter:
                         input_md_file = os.path.join(root, file)
                         with open(input_md_file, 'r', encoding='utf-8') as infile:
                             outfile.write(infile.read() + '\n\n')
-        print(f'Combined Markdown files into {combined_md_file_path}')
+        logging.info(f'Combined Markdown files into {combined_md_file_path}')
 
         output_pdf_file = os.path.join(self.output_dir, 'combined.pdf')
         self.convert_markdown_to_pdf(combined_md_file_path, output_pdf_file)
@@ -46,18 +49,22 @@ class MarkdownToPDFConverter:
     def batch_convert_markdown_to_pdf(self):
         os.makedirs(self.output_dir, exist_ok=True)
 
+        # Collect all Markdown files
+        md_files = []
         for root, dirs, files in os.walk(self.input_dir):
             for file in sorted(files):
                 if file.endswith('.md'):
-                    input_md_file = os.path.join(root, file)
-                    rel_path = os.path.relpath(input_md_file, self.input_dir)
-                    output_subdir = os.path.dirname(rel_path)
-                    output_subdir_path = os.path.join(self.output_dir, output_subdir)
-                    os.makedirs(output_subdir_path, exist_ok=True)
+                    md_files.append(os.path.join(root, file))
 
-                    output_pdf_file = os.path.join(self.output_dir, rel_path.replace('.md', '.pdf'))
+        # Create a progress bar
+        for input_md_file in tqdm(md_files, desc='Converting files', unit='file'):
+            rel_path = os.path.relpath(input_md_file, self.input_dir)
+            output_subdir = os.path.dirname(rel_path)
+            output_subdir_path = os.path.join(self.output_dir, output_subdir)
+            os.makedirs(output_subdir_path, exist_ok=True)
 
-                    self.convert_markdown_to_pdf(input_md_file, output_pdf_file)
+            output_pdf_file = os.path.join(self.output_dir, rel_path.replace('.md', '.pdf'))
+            self.convert_markdown_to_pdf(input_md_file, output_pdf_file)
 
 
 def main():

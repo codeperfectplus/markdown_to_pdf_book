@@ -162,3 +162,4 @@ cython_debug/
 #.idea/
 
 md2book/template/config.tex
+*.pdf
